@@ -1,6 +1,6 @@
 var redis = require("redis"),
 	assert = require('assert'),
-    client = redis.createClient();
+    client = redis.createClient(9999, 's8.hk');
 
 //client.on("error", function (err) {
 //    console.log("Redis connection error to " + client.host + ":" + client.port + " - " + err);
@@ -15,9 +15,9 @@ function loop() {
 		
 		client.set(456, '晕123', function(err, s) {
 			assert.equal(s, 'OK');
-//			client.del(123, 456, 789, function(err, s) {
-//				assert.equal(s, 2);
-//			});
+			client.del(123, 456, 789, function(err, s) {
+				assert.equal(s, 2);
+			});
 		});
 		
 		client.set('foo', '', function(err, s) {
@@ -30,15 +30,15 @@ function loop() {
 
 	client.ping(function(err, s) {
 		assert.equal('PONG', s);
-		loop();
+//		loop();
 	});
 }
 
 loop();
 
-//setTimeout(function() {
-//	client.quit();
-//}, 1000);
+setTimeout(function() {
+	client.quit();
+}, 1000);
 
 //client.set("string key", "string val", redis.print);
 //client.hset("hash key", "hashtest 1", "some value", redis.print);
